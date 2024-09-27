@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request,json, redirect
 from flask_sqlalchemy import SQLAlchemy
-from config import config
+from models import config
+from models import load_user_foods
 
 params = config()
 app = Flask(__name__)
@@ -17,3 +18,4 @@ def about():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
