@@ -7,6 +7,7 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{params["user"]}:{params["password"]}@{params["host"]}:{params["port"]}/{params["database"]}'
 db = SQLAlchemy(app)
 
+# To do: Implement singup/login functionality
 # User Table
 # class User(db.Model):
 #     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
