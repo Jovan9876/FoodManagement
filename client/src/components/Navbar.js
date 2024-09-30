@@ -246,6 +246,7 @@ export function ComplexNavbar() {
           as="a"
           href="#"
           className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
+          onClick={() => window.location.href = 'http://localhost:3000/'}
         >
           StockedUp
         </Typography>
@@ -262,8 +263,8 @@ export function ComplexNavbar() {
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
  
-        <Button size="sm" variant="text">
-          <span>Log In</span>
+        <Button size="sm" variant="text" onClick={() => window.location.href = 'http://localhost:3000/input'}>
+          <span>Add Food</span>
         </Button>
         <ProfileMenu />
       </div>

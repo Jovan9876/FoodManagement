@@ -1,4 +1,3 @@
-// src/pages/MyNewPage.js
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import {ComplexNavbar} from '../components/Navbar'
@@ -11,17 +10,37 @@ const FoodInput = () => {
   const [quantityType, setQuantityType] = useState('');
   const [cost, setCost] = useState('');
 
-  function submitForm() {
-    console.log(itemName);
-    console.log(stock);
-    console.log(quantityType);
-    console.log(cost);
-  }
+  async function submitForm() {
+    const foodData = {
+        name: itemName,
+        stock: stock,
+        quantityType: quantityType,
+        cost: cost,
+    };
+
+    try {
+        const response = await fetch('http://127.0.0.1:5000/input_food', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(foodData),
+        });
+
+        if (response.ok) {
+            const jsonResponse = await response.json();
+            console.log(jsonResponse.message);
+        } else {
+            console.error('Error:', response.statusText);
+        }
+    } catch (error) {
+        console.error('Fetch error:', error);
+    }
+}
 
   return (
     <div>
       <div class="pt-2"></div>
-      <ComplexNavbar></ComplexNavbar>
       <div class="flex justify-center">
       <div class="grid grid-cols-2 gap-36 place-content-between h-48 pt-10">
        <InputDefault label="Food Item Name" value={itemName} onChange={(e)=>setItemName(e.target.value)}/>
