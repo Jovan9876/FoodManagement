@@ -15,5 +15,14 @@ def home():
 def about():
     return render_template('about.html')
 
+@app.route('/cost')
+def cost():
+    return render_template('cost.html')
+
+@app.route('/quantity')
+def quantity():
+    return render_template('quantity.html')
+
+
 if __name__ == '__main__':
     app.run(debug=True)
