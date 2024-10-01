@@ -12,14 +12,6 @@ CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{params["user"]}:{params["password"]}@{params["host"]}:{params["port"]}/{params["database"]}'
 db = SQLAlchemy(app)
 
-@app.route('/')
-def home():
-    return render_template('index.html')
-
-@app.route('/about')
-def about():
-    return render_template('about.html')
-
 @app.route('/input_food', methods=['POST'])
 def add_food():
     data = request.get_json()
