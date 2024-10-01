@@ -3,6 +3,7 @@ import './App.css';
 import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
 import FoodInput from './pages/FoodInput'
 import { ComplexNavbar } from './components/Navbar';
+import RegisterInput from './pages/Register';
 function App() {
   return (
    
@@ -12,6 +13,7 @@ function App() {
         <Routes>
               {/* <Route exact path="/"/> */}
               <Route path="/Input" element={<FoodInput/>}/>
+              <Route path="/Register" element={<RegisterInput/>}/>
               
         </Routes>
       </div>
