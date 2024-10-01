@@ -1,0 +1,5 @@
+env/
+Dockerfile
+.env
+database.ini
+__pycache__

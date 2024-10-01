@@ -1,12 +1,10 @@
 from configparser import ConfigParser
 
-
-def config(filename='database.ini', section='mysql'):
+def config(filename="database.ini", section="mysql"):
     # create a parser
     parser = ConfigParser()
     # read config file
     parser.read(filename)
-
     # get section, default to mysql
     db = {}
     if parser.has_section(section):
@@ -14,6 +12,6 @@ def config(filename='database.ini', section='mysql'):
         for param in params:
             db[param[0]] = param[1]
     else:
-        raise Exception('Section {0} not found in the {1} file'.format(section, filename))
+        raise Exception("Section {0} not found in the {1} file".format(section, filename))
 
     return db
