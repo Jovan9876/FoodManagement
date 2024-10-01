@@ -4,6 +4,7 @@ from flask_cors import CORS
 from models import config
 from models import load_user_foods
 from create_tables import FoodItem
+from get_food_data import get_food_data
 
 params = config()
 app = Flask(__name__)
