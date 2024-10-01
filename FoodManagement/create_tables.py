@@ -1,6 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy import JSON
 from models import config
+
 
 params = config()
 app = Flask(__name__)
@@ -22,7 +24,7 @@ class FoodItem(db.Model):
     quantity = db.Column(db.Integer, nullable=False)
     cost = db.Column(db.Numeric(10, 2), nullable=False)
     expiry_date = db.Column(db.Date, nullable=True)
-    nutrition_info = db.Column(db.Text, nullable=True)
+    nutrition_info = db.Column(JSON, nullable=True)
     user_id = db.Column(db.Integer, nullable=False)
     # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 

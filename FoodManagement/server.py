@@ -28,6 +28,7 @@ def add_food():
         quantity=2,
         cost=2,
         user_id=4,
+        nutrition_info=get_food_data(data['name'])
     )
     db.session.add(new_food_item)
     db.session.commit()
