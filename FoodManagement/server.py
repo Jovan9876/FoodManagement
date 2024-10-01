@@ -25,8 +25,8 @@ def add_food():
     data = request.get_json()
     new_food_item = FoodItem(
         name=data['name'],
-        quantity=2,
-        cost=2,
+        quantity=int(data['quantity']),
+        cost=float(data['cost']),
         user_id=4,
         nutrition_info=get_food_data(data['name'])
     )

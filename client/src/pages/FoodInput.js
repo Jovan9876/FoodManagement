@@ -6,14 +6,14 @@ import {SubmitButton} from '../components/Button'
 
 const FoodInput = () => {
   const [itemName, setItemName] = useState('');
-  const [stock, setStock] = useState('');
+  const [quantity, setQuantity] = useState('');
   const [quantityType, setQuantityType] = useState('');
   const [cost, setCost] = useState('');
 
   async function submitForm() {
     const foodData = {
         name: itemName,
-        stock: stock,
+        quantity: quantity,
         quantityType: quantityType,
         cost: cost,
     };
@@ -40,11 +40,11 @@ const FoodInput = () => {
 
   return (
     <div>
-      <div class="pt-2"></div>
+      
       <div class="flex justify-center">
       <div class="grid grid-cols-2 gap-36 place-content-between h-48 pt-10">
        <InputDefault label="Food Item Name" value={itemName} onChange={(e)=>setItemName(e.target.value)}/>
-       <InputDefault label="Current Stock" value={stock} onChange={(e)=>setStock(e.target.value)}/>
+       <InputDefault label="Quantity" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
        <InputDefault label="Quantity Type" value={quantityType} onChange={(e)=>setQuantityType(e.target.value)}/>
        <InputDefault label="Cost" value={cost} onChange={(e)=>setCost(e.target.value)}/>
         </div>
