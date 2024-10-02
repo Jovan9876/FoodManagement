@@ -19,6 +19,7 @@ from get_food_data import get_food_data
 params = config()
 app = Flask(__name__)
 CORS(app)
+app.config["SECRET_KEY"] = "test"
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{params["user"]}:{params["password"]}@{params["host"]}:{params["port"]}/{params["database"]}'
 db = SQLAlchemy(app)
 
@@ -48,9 +49,10 @@ def login():
 @app.route("/login", methods=["POST"])
 def submit_login():
     """Login Submit method if credentials are valid, otherwise redirect to login page"""
+    data = request.get_json()
     if request.method == "POST":
-        username = request.form["username"]
-        password = request.form["password"]
+        username = data["username"]
+        password = data["password"]
         try:
             user = db.session.query(User).filter_by(username=username).one()
         except:

@@ -40,7 +40,7 @@ const RegisterInput = () => {
       <div class="flex justify-center">
       <div class="grid grid-cols-2 gap-36 place-content-between h-48 pt-10">
        <InputDefault label="User Name" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
-       <InputDefault label="Password" value={userPassword} onChange={(e)=>setUserPassword(e.target.value)}/>
+       <InputDefault label="Password" type="password" value={userPassword} onChange={(e)=>setUserPassword(e.target.value)}/>
         </div>
       </div>
    
