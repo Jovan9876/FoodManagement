@@ -1,97 +1,91 @@
-from flask import Flask, render_template, request,json, redirect, flash
+from flask import Flask, render_template, request,json, redirect, session
+from flask_bcrypt import Bcrypt
 from flask_sqlalchemy import SQLAlchemy
+from flask_session import Session
 from flask_cors import CORS
 
-from flask_login import (
-    login_required,
-    login_user,
-    logout_user,
-    LoginManager,
-    current_user,
-)
-
 # Local imports
-from models import config
 from models import load_user_foods
-from create_tables import FoodItem, User
+from create_tables import FoodItem, User, db
 from get_food_data import get_food_data
+from app_config import ApplicationConfig
 
-params = config()
 app = Flask(__name__)
-CORS(app)
-app.config["SECRET_KEY"] = "test"
-app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{params["user"]}:{params["password"]}@{params["host"]}:{params["port"]}/{params["database"]}'
-db = SQLAlchemy(app)
+app.config.from_object(ApplicationConfig)
+bcrypt = Bcrypt(app)
+CORS(app, supports_credentials=True)
+server_session = Session(app)
+db.init_app(app)
 
-# Flask Login Manager
-login_manager = LoginManager(app)
-login_manager.login_view = "login"
 
-# Login Manager
-@login_manager.user_loader
-def load_user(user_id):
-    """Query the database for the user_id and return the user object"""
-    try:
-        user = db.session.query(User).filter_by(id=user_id).one()
-        return user
-
-    except:
-        return None
-
-@app.route("/", methods=["GET"])
-def login():
-    """Login method if user is authenticated"""
-    if request.method == "GET":
-        if current_user.is_authenticated:
-            return redirect("/home")
-        return render_template("login.html")
+@app.route("/@me", methods=["GET"])
+def get_current_user():
+    user_id = session.get("user_id")
+    if not user_id:
+        return json.jsonify({"error": "Unauthorized"}), 401
+    
+    user = User.query.filter_by(id=user_id).first()
+    return json.jsonify({
+        "id": user.id,
+        "username": user.username
+    }) 
 
 @app.route("/login", methods=["POST"])
-def submit_login():
-    """Login Submit method if credentials are valid, otherwise redirect to login page"""
+def login_user():
     data = request.get_json()
-    if request.method == "POST":
-        username = data["username"]
-        password = data["password"]
-        try:
-            user = db.session.query(User).filter_by(username=username).one()
-        except:
-            flash("Login Information is Incorrect")
-            return redirect("/")
-        if user.validate_password(password):
-            login_user(user)
-            return redirect("/home")
-        else:
-            flash("Login Information is Incorrect")
-            return redirect("/")
+    username = data.get("username")
+    password = data.get("password")
 
-@app.route('/register', methods=['POST', 'GET'])
+    user = User.query.filter_by(username=username).first()
+
+    if user is None:
+        return json.jsonify({"error": "Unauthorized"}), 401
+
+    if not bcrypt.check_password_hash(user.password, password):
+        return json.jsonify({"error": "Unauthorized"}), 401
+    
+    session["user_id"] = user.id
+    return json.jsonify({
+        "id": user.id,
+        "username": user.username
+    })
+
+
+@app.route("/register", methods=["POST"])
 def register_user():
     data = request.get_json()
-    new_user = User(
-        username=data['username'],
-        password=data['password'],
-    )
-    db.session.add(new_user)
-    db.session.commit()
-    return json.jsonify({"message": "User Registered"}), 201
+    username = data.get("username")
+    password = data.get("password")
 
-# Logout user
-@app.route("/logout")
-def logout():
-    """Logout method"""
-    logout_user()
-    return redirect("/")
+    user_exists = User.query.filter_by(username=username).first() is not None
+    if user_exists:
+        return json.jsonify({"error": "User already exists"}), 409
+
+    hashed_password = bcrypt.generate_password_hash(password)
+    new_user = User(username=username, password=hashed_password)
+    db.session.add(new_user)
+    
+    session["user_id"] = new_user.id
+    return json.jsonify({
+        "id": new_user.id,
+        "username": new_user.username
+    })
+
+
+@app.route("/logout", methods=["POST"])
+def logout_user():
+    session.pop("user_id")
+    return json.jsonify({"message": "Logged out successfully"}), 200
+
 
 @app.route('/input_food', methods=['POST'])
-# @login_required
 def add_food():
     data = request.get_json()
     new_food_item = FoodItem(
         name=data['name'],
         quantity=int(data['quantity']),
         cost=float(data['cost']),
-        user_id=4,
+        user_id=session["user_id"],
         nutrition_info=get_food_data(data['name'])
     )
     db.session.add(new_food_item)

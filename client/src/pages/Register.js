@@ -20,12 +20,14 @@ const RegisterInput = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            // credentials: 'include',
             body: JSON.stringify(userData),
         });
 
         if (response.ok) {
             const jsonResponse = await response.json();
             console.log(jsonResponse.message);
+            window.location.href = "/login";
         } else {
             console.error('Error:', response.statusText);
         }

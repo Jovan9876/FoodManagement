@@ -246,7 +246,7 @@ export function ComplexNavbar() {
           as="a"
           href="#"
           className="mr-4 ml-2 cursor-pointer py-1.5 font-medium"
-          onClick={() => window.location.href = 'http://localhost:3000/'}
+          onClick={() => window.location.href = 'http://127.0.0.1:3000/'}
         >
           StockedUp
         </Typography>
@@ -263,8 +263,27 @@ export function ComplexNavbar() {
           <Bars2Icon className="h-6 w-6" />
         </IconButton>
  
-        <Button size="sm" variant="text" onClick={() => window.location.href = 'http://localhost:3000/input'}>
+        <Button size="sm" variant="text" onClick={() => window.location.href = 'http://127.0.0.1:3000/input'}>
           <span>Add Food</span>
+        </Button>     
+        <Button size="sm" variant="text" onClick={() => {
+        fetch('http://127.0.0.1:5000/logout', {
+          method: 'POST',
+          credentials: 'include', // Include cookies with the request
+        })
+          .then((response) => {
+            if (response.ok) {
+              // Redirect to login page after successful logout
+              window.location.href = 'http://127.0.0.1:3000/login';
+            } else {
+              console.error('Failed to log out');
+            }
+          })
+          .catch((error) => {
+            console.error('Error during signout:', error);
+          });
+      }}>
+          <span>Signout</span>
         </Button>
         <ProfileMenu />
       </div>

@@ -24,6 +24,7 @@ const FoodInput = () => {
             headers: {
                 'Content-Type': 'application/json',
             },
+            credentials: 'include',
             body: JSON.stringify(foodData),
         });
 
