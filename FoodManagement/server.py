@@ -64,7 +64,7 @@ def register_user():
     hashed_password = bcrypt.generate_password_hash(password)
     new_user = User(username=username, password=hashed_password)
     db.session.add(new_user)
-    
+    db.session.commit()
     session["user_id"] = new_user.id
     return json.jsonify({
         "id": new_user.id,
