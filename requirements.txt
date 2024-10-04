@@ -8,6 +8,7 @@ cryptography==43.0.1
 fatsecret==0.4.0
 Flask==3.0.3
 Flask-Cors==5.0.0
+Flask-Login==0.6.3
 Flask-SQLAlchemy==3.1.1
 greenlet==3.1.0
 idna==3.10

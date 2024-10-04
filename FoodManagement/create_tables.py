@@ -2,33 +2,34 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import JSON
 from models import config
-
+from flask_login import UserMixin
+from uuid import uuid4
 
 params = config()
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = f'mysql+pymysql://{params["user"]}:{params["password"]}@{params["host"]}:{params["port"]}/{params["database"]}'
 db = SQLAlchemy(app)
 
-# To do: Implement singup/login functionality
-# User Table
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-#     username = db.Column(db.String(50), unique=True, nullable=False)
-#     password = db.Column(db.String(255), nullable=False)
-#     food_items = db.relationship('FoodItem', backref='owner', lazy=True)
+def get_uuid():
+    return uuid4().hex
+
+class User(db.Model, UserMixin):
+    __tablename__ = "users"
+    id = db.Column(db.String(32), primary_key=True, unique=True, default=get_uuid)
+    username = db.Column(db.String(50))
+    password = db.Column(db.Text, nullable=False)
+
 
 # Food Item Table
 class FoodItem(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
     cost = db.Column(db.Numeric(10, 2), nullable=False)
     expiry_date = db.Column(db.Date, nullable=True)
     nutrition_info = db.Column(JSON, nullable=True)
-    user_id = db.Column(db.Integer, nullable=False)
-    # user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.String(32), primary_key=True)
 
-# Removed foreign key temporarily
 
 # To create the table
 with app.app_context():
