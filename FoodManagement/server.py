@@ -22,12 +22,12 @@ def get_current_user():
     user_id = session.get("user_id")
     if not user_id:
         return json.jsonify({"error": "Unauthorized"}), 401
-    
+
     user = User.query.filter_by(id=user_id).first()
     return json.jsonify({
         "id": user.id,
         "username": user.username
-    }) 
+    })
 
 @app.route("/login", methods=["POST"])
 def login_user():
@@ -42,7 +42,7 @@ def login_user():
 
     if not bcrypt.check_password_hash(user.password, password):
         return json.jsonify({"error": "Unauthorized"}), 401
-    
+
     session["user_id"] = user.id
     return json.jsonify({
         "id": user.id,
@@ -76,6 +76,17 @@ def logout_user():
     session.pop("user_id")
     return json.jsonify({"message": "Logged out successfully"}), 200
 
+
+@app.route('/inventory', methods=['GET'])
+def get_inventory():
+    # user_id = session.get("user_id")
+    user_id = "3fddc31e5db247958d954971522ac0bc"
+
+    if not user_id:
+        return json.jsonify({"error": "Unauthorized"}), 401
+
+    foods = load_user_foods(user_id)
+    return json.jsonify(foods)
 
 @app.route('/input_food', methods=['POST'])
 def add_food():
