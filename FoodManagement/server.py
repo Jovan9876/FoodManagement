@@ -1,6 +1,5 @@
-from flask import Flask, render_template, request,json, redirect, session
+from flask import Flask, request,json, session
 from flask_bcrypt import Bcrypt
-from flask_sqlalchemy import SQLAlchemy
 from flask_session import Session
 from flask_cors import CORS
 
