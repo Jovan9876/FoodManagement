@@ -1,4 +1,4 @@
-from fatsecret import Fatsecret 
+from fatsecret import Fatsecret
 from dotenv import load_dotenv
 import os
 
@@ -11,11 +11,20 @@ consumerSecret = os.getenv('CONSUMER_SECRET')
 
 fs = Fatsecret(consumerKey, consumerSecret)
 
+def to_camel_case(s):
+    # Split the string into words
+    words = s.split()
+
+    # Capitalize the first letter of each word except the first one
+    return words[0].lower() + ''.join(word.capitalize() for word in words[1:])
+
 def get_food_data(food):
     nutrition_dict = {}
 
     food_data = fs.foods_search(food)
-    
+
+    print(food_data)
+
     # Isolate just the description
     description = food_data[0]['food_description']
 
@@ -24,7 +33,7 @@ def get_food_data(food):
 
     # Get the serving size
     serving_size = parts[0].strip()
-    nutrition_dict = {'Serving Size': serving_size}
+    nutrition_dict = {'servingSize': serving_size}
 
     # Extracting nutritional information
     nutritional_info = parts[1].strip().split('|')
@@ -34,7 +43,7 @@ def get_food_data(food):
         key_value = info.split(':')
         if len(key_value) == 2:
             # Strip whitespace and add to dictionary
-            key = key_value[0].strip()
+            key = to_camel_case(key_value[0].strip())
             value = key_value[1].strip()
             nutrition_dict[key] = value
 
