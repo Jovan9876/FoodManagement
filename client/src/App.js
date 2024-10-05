@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import './App.css';
-import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
+import { ComplexNavbar } from './components/Navbar';
+import { Expenses, Inventory } from './pages';
 import FoodInput from './pages/FoodInput';
 import LoginInput from './pages/LoginInput';
-import { ComplexNavbar } from './components/Navbar';
 import RegisterInput from './pages/Register';
 
 function App() {
@@ -13,7 +14,7 @@ function App() {
   useEffect(() => {
     // Fetch user info to check authentication status
     fetch('http://127.0.0.1:5000/@me', {
-      method: "GET",
+      method: 'GET',
       credentials: 'include',
     })
       .then((response) => response.json())
@@ -43,20 +44,22 @@ function App() {
 
   return (
     <Router>
-      <div className="pt-2">
+      <div className='pt-2'>
         {/* Render navbar only if the user is authenticated */}
         {isAuthenticated && <ComplexNavbar />}
 
         <Routes>
           {/* Public routes */}
-          <Route path="/login" element={<LoginInput onLogin={handleLogin} />} />
-          <Route path="/register" element={<RegisterInput />} />
+          <Route path='/login' element={<LoginInput onLogin={handleLogin} />} />
+          <Route path='/register' element={<RegisterInput />} />
+          <Route path='/inventory' element={<Inventory />} />
+          <Route path='/expenses' element={<Expenses />} />
 
           {/* Private routes */}
           {isAuthenticated ? (
-            <Route path="/input" element={<FoodInput />} />
+            <Route path='/input' element={<FoodInput />} />
           ) : (
-            <Route path="*" element={<Navigate to="/login" />} />
+            <Route path='*' element={<Navigate to='/login' />} />
           )}
         </Routes>
       </div>
