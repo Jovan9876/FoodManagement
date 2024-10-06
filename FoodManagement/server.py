@@ -79,8 +79,7 @@ def logout_user():
 
 @app.route('/inventory', methods=['GET'])
 def get_inventory():
-    # user_id = session.get("user_id")
-    user_id = "3fddc31e5db247958d954971522ac0bc"
+    user_id = session.get("user_id")
 
     if not user_id:
         return json.jsonify({"error": "Unauthorized"}), 401

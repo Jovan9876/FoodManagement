@@ -52,8 +52,12 @@ function App() {
           {/* Public routes */}
           <Route path='/login' element={<LoginInput onLogin={handleLogin} />} />
           <Route path='/register' element={<RegisterInput />} />
-          <Route path='/inventory' element={<Inventory />} />
-          <Route path='/expenses' element={<Expenses />} />
+          {isAuthenticated && (
+            <React.Fragment>
+              <Route path='/inventory' element={<Inventory />} />
+              <Route path='/expenses' element={<Expenses />} />
+            </React.Fragment>
+          )}
 
           {/* Private routes */}
           {isAuthenticated ? (
