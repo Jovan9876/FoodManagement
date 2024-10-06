@@ -1,7 +1,10 @@
+import { Button, Dialog, DialogBody, DialogFooter, DialogHeader } from '@material-tailwind/react';
 import * as React from 'react';
-
 export const Inventory = () => {
   const [inventory, setInventory] = React.useState([]);
+
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(!open);
 
   React.useEffect(() => {
     async function fetchData() {
@@ -35,26 +38,51 @@ export const Inventory = () => {
     }
     void fetchData();
   }, []);
-
+  console.log('inventory is :::::::::<br></br>');
   console.log(inventory);
 
   return (
-    <div className=''>
-      <ul class='max-w-md divide-y divide-gray-200 dark:divide-gray-700'>
+    <div className='justify-items-center pt-8'>
+      <ul class='flex flex-col space-y-8 max-w-md divide-y pl-8'>
         {inventory.map((item) => (
-          <li class='pb-3 sm:pb-4' key={item.id}>
-            <div class='flex items-center space-x-4 rtl:space-x-reverse'>
+          <li
+            class='outline outline-offset-2 outline-6 outline-light-green-800 rounded-3xl pb-3 sm:pb-4 pt-4 pl-5'
+            key={item.id}>
+            <div class='flex items-center space-x-2 rtl:space-x-reverse'>
               <div class='flex-shrink-0'>
-                <img class='w-8 h-8 rounded-full' src='https://sl.bing.net/fiaDToK9WdU' alt='Neil' />
+                <img class='w-8 h-8 rounded-full' src={`/${item.name}.jpg`} alt='Bananas' />
               </div>
-              <div class='flex-1 min-w-0'>
+              <div class='flex-1 min-w-0 pl-2'>
                 <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>{item.name}</p>
-                <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>{item.nutrition_info.calories}</p>
-
-                {/* need to add stock here */}
-                {/* <p class='text-sm text-gray-500 truncate dark:text-gray-400'>{item.Inventory}</p> */}
+              </div>
+              <div class='inline-flex items-center text-base font-semibold text-gray-900 dark:text-white pr-6'>
+                <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>Quantity:</p>
+                {item.quantity}
+                <Button onClick={handleOpen} variant='text' color='green' size='sm'>
+                  NUTRITION
+                </Button>
+                <Dialog open={open} handler={handleOpen} size='xs'>
+                  <DialogHeader>NUTRITIONAL INFO:</DialogHeader>
+                  <DialogBody>
+                    <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>
+                      CALORIES: {`\t${item.nutrition_info.calories}`}
+                      <br></br>
+                      FAT: {`\t${item.nutrition_info.fat}`}
+                      <br></br>
+                      CARBS: {`\t${item.nutrition_info.carbs}`}
+                      <br></br>
+                      PROTEIN: {`\t${item.nutrition_info.protein}`}
+                    </p>
+                  </DialogBody>
+                  <DialogFooter>
+                    <Button variant='text' color='green' onClick={handleOpen} className='mr-1'>
+                      <span>CLOSE</span>
+                    </Button>
+                  </DialogFooter>
+                </Dialog>
               </div>
               <div class='inline-flex items-center text-base font-semibold text-gray-900 dark:text-white'>
+                <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>Price:</p>
                 {item.cost}
               </div>
             </div>
