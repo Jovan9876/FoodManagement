@@ -50,7 +50,7 @@ const FoodInput = () => {
 }
 
   return (
-    <div>
+    <div class="pb-3">
       <div class="pl-44 pt-6">
       <h1 class="font-bold text-2xl">Add New Food Item</h1>
       <h2 class="font-normal pb-10">Let's add your new food item</h2>
