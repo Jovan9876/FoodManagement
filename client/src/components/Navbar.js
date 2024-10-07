@@ -10,6 +10,7 @@ import {
   RocketLaunchIcon,
   Square3Stack3DIcon,
   UserCircleIcon,
+  AcademicCapIcon
 } from '@heroicons/react/24/solid';
 import {
   Avatar,
@@ -55,6 +56,24 @@ function ProfileMenu() {
 
   const closeMenu = () => setIsMenuOpen(false);
 
+  function Logout() {
+    fetch('http://127.0.0.1:5000/logout', {
+      method: 'POST',
+      credentials: 'include', // Include cookies with the request
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Redirect to login page after successful logout
+          window.location.href = 'http://127.0.0.1:3000/login';
+        } else {
+          console.error('Failed to log out');
+        }
+      })
+      .catch((error) => {
+        console.error('Error during signout:', error);
+      });
+  }
+
   return (
     <Menu open={isMenuOpen} handler={setIsMenuOpen} placement='bottom-end'>
       <MenuHandler>
@@ -81,7 +100,7 @@ function ProfileMenu() {
           return (
             <MenuItem
               key={label}
-              onClick={closeMenu}
+              onClick={isLastItem ? Logout : closeMenu}
               className={`flex items-center gap-2 rounded ${
                 isLastItem ? 'hover:bg-red-500/10 focus:bg-red-500/10 active:bg-red-500/10' : ''
               }`}>
@@ -229,7 +248,7 @@ export function ComplexNavbar() {
         <Button size='sm' variant='text' onClick={() => (window.location.href = 'http://127.0.0.1:3000/input')}>
           <span>Add Food</span>
         </Button>
-        <Button
+        {/* <Button
           size='sm'
           variant='text'
           onClick={() => {
@@ -250,7 +269,7 @@ export function ComplexNavbar() {
               });
           }}>
           <span>Signout</span>
-        </Button>
+        </Button> */}
         <ProfileMenu />
       </div>
       <MobileNav open={isNavOpen} className='overflow-scroll'>

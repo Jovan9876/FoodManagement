@@ -25,9 +25,13 @@ class FoodItem(db.Model):
     id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
     name = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    unit_type = db.Column(db.String(50), nullable=False)
     cost = db.Column(db.Numeric(10, 2), nullable=False)
+    low_threshold = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.String(50), nullable=True)
     expiry_date = db.Column(db.Date, nullable=True)
     nutrition_info = db.Column(JSON, nullable=True)
+    description = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.String(32), primary_key=True)
 
 
