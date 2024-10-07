@@ -66,7 +66,7 @@ const FoodInput = () => {
        <InputDefault label="Low Threshold Amount" value={lowThreshold} placeholder={"e.g. < 2"}  type={"number"} onChange={(e)=>setLowThreshold(e.target.value)}/>
        <InputDefault label="Expiration Date" value={expirationDate} placeholder={"e.g. 2024-10-08"} type={"date"} onChange={(e)=>setExpirationDate(e.target.value)}/>
        <div class="col-span-2 row-span-2 row-start-4">
-       <TextareaSizes label="Description"value={description} onChange={(e)=>setDescription(e.target.value)}/>
+       <TextareaSizes label="Description (Optional)"value={description} onChange={(e)=>setDescription(e.target.value)}/>
         </div>
         <div class="row-start-6 col-start-2 justify-center flex">
         <SubmitButton label="Submit" onClick={submitForm}/>
