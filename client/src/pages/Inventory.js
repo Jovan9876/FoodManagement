@@ -46,7 +46,7 @@ export const Inventory = () => {
       <ul class='flex flex-col space-y-8 max-w-md divide-y pl-8'>
         {inventory.map((item) => (
           <li
-            class='outline outline-offset-2 outline-6 outline-light-green-800 rounded-3xl pb-3 sm:pb-4 pt-4 pl-5'
+            class='outline outline-offset-2 outline-6 outline-light-green-800 rounded-3xl pb-3 sm:pb-4 pt-4 pl-5 pr-2'
             key={item.id}>
             <div class='flex items-center space-x-2 rtl:space-x-reverse'>
               <div class='flex-shrink-0'>
@@ -56,7 +56,7 @@ export const Inventory = () => {
                 <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>{item.name}</p>
               </div>
               <div class='inline-flex items-center text-base font-semibold text-gray-900 dark:text-white pr-6'>
-                <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>Quantity:</p>
+                <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>Stock:</p>
                 {item.quantity}
                 <Button onClick={handleOpen} variant='text' color='green' size='sm'>
                   NUTRITION
