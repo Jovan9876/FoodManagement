@@ -1,0 +1,65 @@
+/* FoodItem.css */
+
+/* Container for each food item */
+.food-item-card {
+    width: 300px;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.food-item-card:hover {
+    transform: translateY(-10px);
+}
+
+/* Image inside the food item card */
+.food-item-card img {
+    width: 100%;
+    height: auto;
+    margin: 10px 0px;
+}
+
+/* Title for the food item */
+.food-item-card h2 {
+    font-size: 1.5rem;
+    margin: 15px 0;
+    color: #333;
+}
+
+/* Description for the food item */
+.food-item-card p {
+    font-size: 1rem;
+    color: #666;
+    padding: 0 15px;
+}
+
+/* Button at the bottom of the food item card */
+.food-item-card button {
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    width: 100px;
+    font-size: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.food-item-card button:hover {
+    background-color: #0056b3;
+}
+
+.button-container {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row; 
+    gap: 10px;
+    justify-content: center;
+    align-items: center;  
+}

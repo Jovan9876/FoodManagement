@@ -1,11 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import './App.css';
-import { ComplexNavbar } from './components/Navbar';
-import { Expenses, Inventory } from './pages';
-import FoodInput from './pages/FoodInput';
-import LoginInput from './pages/LoginInput';
-import RegisterInput from './pages/Register';
+import React, { useEffect, useState } from "react";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import "./App.css";
+import { ComplexNavbar } from "./components/Navbar";
+import { Expenses, Inventory } from "./pages";
+import FoodInput from "./pages/FoodInput";
+import LoginInput from "./pages/LoginInput";
+import RegisterInput from "./pages/Register";
+import ShoppingList from "./pages/ShoppingList";
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -13,9 +19,9 @@ function App() {
 
   useEffect(() => {
     // Fetch user info to check authentication status
-    fetch('http://127.0.0.1:5000/@me', {
-      method: 'GET',
-      credentials: 'include',
+    fetch("http://127.0.0.1:5000/@me", {
+      method: "GET",
+      credentials: "include",
     })
       .then((response) => response.json())
       .then((data) => {
@@ -27,7 +33,7 @@ function App() {
         setLoading(false); // Stop loading
       })
       .catch((error) => {
-        console.error('Error:', error);
+        console.error("Error:", error);
         setIsAuthenticated(false);
         setLoading(false); // Stop loading
       });
@@ -44,26 +50,25 @@ function App() {
 
   return (
     <Router>
-      <div className='pt-2'>
+      <div className="pt-2">
         {/* Render navbar only if the user is authenticated */}
         {isAuthenticated && <ComplexNavbar />}
 
         <Routes>
           {/* Public routes */}
-          <Route path='/login' element={<LoginInput onLogin={handleLogin} />} />
-          <Route path='/register' element={<RegisterInput />} />
-          {isAuthenticated && (
-            <React.Fragment>
-              <Route path='/inventory' element={<Inventory />} />
-              <Route path='/expenses' element={<Expenses />} />
-            </React.Fragment>
-          )}
+          <Route path="/login" element={<LoginInput onLogin={handleLogin} />} />
+          <Route path="/register" element={<RegisterInput />} />
 
           {/* Private routes */}
           {isAuthenticated ? (
-            <Route path='/input' element={<FoodInput />} />
+            <React.Fragment>
+              <Route path="/input" element={<FoodInput />} />
+              <Route path="/inventory" element={<Inventory />} />
+              <Route path="/expenses" element={<Expenses />} />
+              <Route path="/shopping" element={<ShoppingList />} />
+            </React.Fragment>
           ) : (
-            <Route path='*' element={<Navigate to='/login' />} />
+            <Route path="*" element={<Navigate to="/login" />} />
           )}
         </Routes>
       </div>

@@ -131,6 +131,11 @@ const navListMenuItems = [
     description: '',
     link: '/expenses',
   },
+  {
+    title: 'Shopping List',
+    description: '',
+    link: '/shopping',
+  },
 ];
 
 function NavListMenu() {
