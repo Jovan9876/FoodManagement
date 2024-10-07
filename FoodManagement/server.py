@@ -87,13 +87,29 @@ def get_inventory():
     foods = load_user_foods(user_id)
     return json.jsonify(foods)
 
+@app.route('/expenses', methods=['GET'])
+def get_expenses():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return json.jsonify({"error": "Unauthorized"}), 401
+
+    foods = load_user_foods(user_id)
+    return json.jsonify(foods)
+
+
 @app.route('/input_food', methods=['POST'])
 def add_food():
     data = request.get_json()
     new_food_item = FoodItem(
         name=data['name'],
         quantity=int(data['quantity']),
+        unit_type=data['unitType'],
         cost=float(data['cost']),
+        low_threshold=int(data['lowThreshold']),
+        category=data['category'],
+        expiry_date=data['expirationDate'],
+        description=data['description'],
         user_id=session["user_id"],
         nutrition_info=get_food_data(data['name'])
     )
