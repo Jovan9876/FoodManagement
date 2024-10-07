@@ -94,7 +94,12 @@ def add_food():
     new_food_item = FoodItem(
         name=data['name'],
         quantity=int(data['quantity']),
+        unit_type=data['unitType'],
         cost=float(data['cost']),
+        low_threshold=int(data['lowThreshold']),
+        category=data['category'],
+        expiry_date=data['expirationDate'],
+        description=data['description'],
         user_id=session["user_id"],
         nutrition_info=get_food_data(data['name'])
     )

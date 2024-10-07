@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import {InputDefault} from '../components/InputField'
 import {SubmitButton} from '../components/Button'
 import { TextareaSizes } from '../components/TextArea';
@@ -13,13 +13,18 @@ const FoodInput = () => {
   const [category, setCategory] = useState('');
   const [expirationDate, setExpirationDate] = useState('');
   const [description, setDescription] = useState('');
+  const navigate = useNavigate();
 
   async function submitForm() {
     const foodData = {
         name: itemName,
         quantity: quantity,
-        quantityType: unitType,
+        unitType: unitType,
         cost: cost,
+        lowThreshold: lowThreshold,
+        category: category,
+        expirationDate: expirationDate,
+        description: description
     };
 
     try {
@@ -35,6 +40,7 @@ const FoodInput = () => {
         if (response.ok) {
             const jsonResponse = await response.json();
             console.log(jsonResponse.message);
+            navigate("/inventory");
         } else {
             console.error('Error:', response.statusText);
         }
