@@ -51,20 +51,20 @@ const FoodInput = () => {
 
   return (
     <div>
-      <div class="pl-32 pt-6">
+      <div class="pl-44 pt-6">
       <h1 class="font-bold text-2xl">Add New Food Item</h1>
       <h2 class="font-normal pb-10">Let's add your new food item</h2>
       </div >
      
       <div class="flex justify-center">
       <div class="grid grid-cols-3 grid-rows-6 gap-16 p-10 border-solid border-2 border-black rounded-lg">
-       <InputDefault class="" label="Food Item Name" value={itemName} onChange={(e)=>setItemName(e.target.value)}/>
-       <InputDefault label="Quantity" value={quantity} onChange={(e)=>setQuantity(e.target.value)}/>
-       <InputDefault label="Unit of Measure" value={unitType} onChange={(e)=>setUnitType(e.target.value)}/>
-       <InputDefault label="Cost" value={cost} onChange={(e)=>setCost(e.target.value)}/>
-       <InputDefault label="Category" value={category} onChange={(e)=>setCategory(e.target.value)}/>
-       <InputDefault label="Low Threshold Amount" value={lowThreshold} onChange={(e)=>setLowThreshold(e.target.value)}/>
-       <InputDefault label="Expiration Date" value={expirationDate} onChange={(e)=>setExpirationDate(e.target.value)}/>
+       <InputDefault class="" label="Food Item Name" value={itemName} placeholder={"e.g. Banana"} onChange={(e)=>setItemName(e.target.value)}/>
+       <InputDefault label="Quantity" value={quantity} placeholder={"e.g. 5"} type={"number"} onChange={(e)=>setQuantity(e.target.value)}/>
+       <InputDefault label="Unit of Measure" value={unitType} placeholder={"e.g. lbs, kg, each"} onChange={(e)=>setUnitType(e.target.value)}/>
+       <InputDefault label="Cost" value={cost} placeholder={"e.g. 2.99"} type={"number"} onChange={(e)=>setCost(e.target.value)}/>
+       <InputDefault label="Category" value={category} placeholder={"e.g. Fruit, Vegtable, Frozen"} onChange={(e)=>setCategory(e.target.value)}/>
+       <InputDefault label="Low Threshold Amount" value={lowThreshold} placeholder={"e.g. < 2"}  type={"number"} onChange={(e)=>setLowThreshold(e.target.value)}/>
+       <InputDefault label="Expiration Date" value={expirationDate} placeholder={"e.g. 2024-10-08"} type={"date"} onChange={(e)=>setExpirationDate(e.target.value)}/>
        <div class="col-span-2 row-span-2 row-start-4">
        <TextareaSizes label="Description"value={description} onChange={(e)=>setDescription(e.target.value)}/>
         </div>
