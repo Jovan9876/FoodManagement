@@ -4,7 +4,7 @@ from flask_session import Session
 from flask_cors import CORS
 
 # Local imports
-from models import load_user_foods
+from models import load_user_foods, load_shopping_foods
 from create_tables import FoodItem, User, db
 from get_food_data import get_food_data
 from app_config import ApplicationConfig
@@ -97,6 +97,15 @@ def get_expenses():
     foods = load_user_foods(user_id)
     return json.jsonify(foods)
 
+@app.route('/shopping', methods=['GET'])
+def get_shopping():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return json.jsonify({"error": "Unauthorized"}), 401
+
+    foods = load_shopping_foods(user_id)
+    return json.jsonify(foods)
 
 @app.route('/input_food', methods=['POST'])
 def add_food():
