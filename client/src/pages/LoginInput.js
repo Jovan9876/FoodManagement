@@ -106,7 +106,7 @@ const Login = ({ onLogin }) => { // Accept onLogin prop
         onLogin();
 
         // Use navigate to redirect to the input page
-        navigate("/input");
+        navigate("/");
       } else {
         console.error("Error:", response.statusText);
       }

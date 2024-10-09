@@ -124,7 +124,7 @@ const navListMenuItems = [
   {
     title: 'Food Inventory',
     description: '',
-    link: '/inventory',
+    link: '/',
   },
   {
     title: 'Expenses',

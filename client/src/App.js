@@ -62,8 +62,8 @@ function App() {
           {/* Private routes */}
           {isAuthenticated ? (
             <React.Fragment>
+              <Route path="/" element={<Inventory />} />
               <Route path="/input" element={<FoodInput />} />
-              <Route path="/inventory" element={<Inventory />} />
               <Route path="/expenses" element={<Expenses />} />
               <Route path="/shopping" element={<ShoppingList />} />
             </React.Fragment>

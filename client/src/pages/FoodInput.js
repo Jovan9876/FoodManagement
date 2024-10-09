@@ -40,7 +40,6 @@ const FoodInput = () => {
         if (response.ok) {
             const jsonResponse = await response.json();
             console.log(jsonResponse.message);
-            navigate("/inventory");
         } else {
             console.error('Error:', response.statusText);
         }
