@@ -47,6 +47,9 @@ return (
       <div className="submit-button">
         <SubmitButton label="Submit" onClick={submitForm} />
       </div>
+      <div className="login-link">
+          <Link to="/login">Already have an account? Login here</Link>
+        </div>
     </div>
   </div>
 );

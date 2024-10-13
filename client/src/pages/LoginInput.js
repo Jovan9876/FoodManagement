@@ -116,9 +116,10 @@ const Login = ({ onLogin }) => { // Accept onLogin prop
   }
 
   return (
-    <div>
-      <div className="flex justify-center">
-        <div className="grid grid-cols-2 gap-36 place-content-between h-48 pt-10">
+    <div className="login-container">
+      <h1 className="login-title">Login</h1>
+      <div className="login-box">
+        <div className="input-grid">
           <InputDefault
             label="User Name"
             value={userName}
@@ -131,14 +132,12 @@ const Login = ({ onLogin }) => { // Accept onLogin prop
             onChange={(e) => setUserPassword(e.target.value)}
           />
         </div>
-      </div>
-
-      <div className="pl-10 flex justify-center pt-60">
-        <SubmitButton label="Login" onClick={submitForm} />
-      </div>
-
-      <div className="flex justify-center pt-5">
-        <Link to="/Register">Don't have an account? Register here</Link>
+        <div className="submit-button">
+          <SubmitButton label="Login" onClick={submitForm} />
+        </div>
+        <div className="register-link">
+          <Link to="/Register">Don't have an account? Register here</Link>
+        </div>
       </div>
     </div>
   );
