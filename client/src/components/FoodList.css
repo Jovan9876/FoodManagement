@@ -6,3 +6,42 @@
     padding: 20px;
     justify-items: center;
 }
+
+.register-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+    position: relative;
+  }
+  
+  .register-title {
+    position: absolute;
+    top: calc(50% - 200px);
+    font-size: 24px;
+    font-weight: bold;
+  }
+  
+  .register-box {
+    width: 500px;
+    padding: 20px;
+    border: 2px solid #000;
+    border-radius: 8px;
+    background-color: #f5f5f5;
+    text-align: center;
+  }
+  
+  .input-grid {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .submit-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    }
+  

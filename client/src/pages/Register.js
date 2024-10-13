@@ -36,21 +36,21 @@ const RegisterInput = () => {
     }
 }
 
-  return (
-    <div>
-      
-      <div class="flex justify-center">
-      <div class="grid grid-cols-2 gap-36 place-content-between h-48 pt-10">
-       <InputDefault label="User Name" value={userName} onChange={(e)=>setUserName(e.target.value)}/>
-       <InputDefault label="Password" type="password" value={userPassword} onChange={(e)=>setUserPassword(e.target.value)}/>
-        </div>
+return (
+  <div className="register-container">
+    <h1 className="register-title">Register</h1>
+    <div className="register-box">
+      <div className="input-grid">
+        <InputDefault label="User Name" value={userName} onChange={(e) => setUserName(e.target.value)} />
+        <InputDefault label="Password" type="password" value={userPassword} onChange={(e) => setUserPassword(e.target.value)} />
       </div>
-   
-      <div class="pl-10 flex justify-center pt-60">
-      <SubmitButton label="Submit" onClick={submitForm}/>
+      <div className="submit-button">
+        <SubmitButton label="Submit" onClick={submitForm} />
       </div>
     </div>
-  );
+  </div>
+);
+
 };
 
 export default RegisterInput;
