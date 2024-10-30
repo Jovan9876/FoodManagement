@@ -110,19 +110,30 @@ def get_shopping():
 @app.route('/input_food', methods=['POST'])
 def add_food():
     data = request.get_json()
-    new_food_item = FoodItem(
+
+    existing_food_item = FoodItem.query.filter_by(
         name=data['name'],
-        quantity=int(data['quantity']),
-        unit_type=data['unitType'],
-        cost=float(data['cost']),
-        low_threshold=int(data['lowThreshold']),
-        category=data['category'],
-        expiry_date=data['expirationDate'],
-        description=data['description'],
-        user_id=session["user_id"],
-        nutrition_info=get_food_data(data['name'])
-    )
-    db.session.add(new_food_item)
+        user_id=session["user_id"]
+    ).first()
+    if existing_food_item:
+        existing_food_item.quantity += int(data['quantity'])
+        existing_food_item.cost = float(data['cost'])
+        existing_food_item.expiry_date = data['expirationDate']
+        existing_food_item.low_threshold = int(data['lowThreshold']),
+    else:
+        new_food_item = FoodItem(
+            name=data['name'],
+            quantity=int(data['quantity']),
+            unit_type=data['unitType'],
+            cost=float(data['cost']),
+            low_threshold=int(data['lowThreshold']),
+            category=data['category'],
+            expiry_date=data['expirationDate'],
+            description=data['description'],
+            user_id=session["user_id"],
+            nutrition_info=get_food_data(data['name'])
+        )
+        db.session.add(new_food_item)
     db.session.commit()
     return json.jsonify({"message": "Food item added"}), 201
 
