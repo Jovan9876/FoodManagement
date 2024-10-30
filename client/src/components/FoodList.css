@@ -95,3 +95,9 @@
     font-size: 14px;
   }
   
+/* Message flash */
+  .flash-message {
+    color: red;
+    margin-bottom: 10px;
+  }
+  
