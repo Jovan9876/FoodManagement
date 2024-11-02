@@ -40,6 +40,7 @@ const FoodInput = () => {
         if (response.ok) {
             const jsonResponse = await response.json();
             console.log(jsonResponse.message);
+            window.location.href = 'http://127.0.0.1:3000/';
         } else {
             console.error('Error:', response.statusText);
         }
