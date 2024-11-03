@@ -137,10 +137,11 @@ def add_food():
     db.session.commit()
     return json.jsonify({"message": "Food item added"}), 201
 
-@app.route('/food/<id>', methods=['GET'])
-def get_food_item(id):
+# Retrieves food item by it's name
+@app.route('/food/<food>', methods=['GET'])
+def get_food_item(food):
     food_item = FoodItem.query.filter_by(
-        id=id,
+        name=food,
         user_id=session["user_id"]
     ).first()
     if food_item:

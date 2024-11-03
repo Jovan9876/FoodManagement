@@ -64,7 +64,7 @@ function App() {
             <React.Fragment>
               <Route path="/" element={<Inventory />} />
               <Route path="/input" element={<FoodInput />} />
-              <Route path="/input/:id" element={<FoodInput />} />
+              <Route path="/input/:food" element={<FoodInput />} />
               <Route path="/expenses" element={<Expenses />} />
               <Route path="/shopping" element={<ShoppingList />} />
             </React.Fragment>

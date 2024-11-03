@@ -5,7 +5,7 @@ import {SubmitButton} from '../components/Button'
 import { TextareaSizes } from '../components/TextArea';
 
 const FoodInput = () => {
-  const { id } = useParams();
+  const { food } = useParams();
   const [itemName, setItemName] = useState('');
   const [quantity, setQuantity] = useState('');
   const [unitType, setUnitType] = useState('');
@@ -15,14 +15,16 @@ const FoodInput = () => {
   const [expirationDate, setExpirationDate] = useState('');
   const [description, setDescription] = useState('');
 
-  const headerText = id ? "Update Existing Food Item" : "Add New Food Item"
-  const subHeaderText = id ? "Let's update your food item" : "Let's add your new food item"
-  const isDisabled = id ? true : false
+   const [foodExists, setFoodExists] = useState(false);
+
+  const headerText = foodExists ? "Update Existing Food Item" : "Add New Food Item";
+  const subHeaderText = foodExists ? "Let's update your food item" : "Let's add your new food item";
+  const isDisabled = foodExists;
 useEffect(() => {
-  if (id) {
+  if (food) {
       const fetchFoodItem = async () => {
           try {
-              const response = await fetch(`http://127.0.0.1:5000/food/${id}`, {
+              const response = await fetch(`http://127.0.0.1:5000/food/${food}`, {
                 method: 'GET', // GET request
                 credentials: 'include', // Include cookies for session management
                 headers: {
@@ -39,17 +41,20 @@ useEffect(() => {
                   setCategory(data.category);
                   setExpirationDate(data.expiration_date);
                   setDescription(data.description);
+                  setFoodExists(true);
               } else {
+                  setFoodExists(false);
                   console.error('Error fetching food item:', response.statusText);
               }
           } catch (error) {
+              setFoodExists(false);
               console.error('Fetch error:', error);
           }
       };
 
       fetchFoodItem();
   }
-}, [id]);
+}, [food]);
 
   async function submitForm() {
     const foodData = {
