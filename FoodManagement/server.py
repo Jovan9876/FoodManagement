@@ -116,7 +116,7 @@ def add_food():
         user_id=session["user_id"]
     ).first()
     if existing_food_item:
-        existing_food_item.quantity += int(data['quantity'])
+        existing_food_item.quantity = int(data['quantity'])
         existing_food_item.cost = float(data['cost'])
         existing_food_item.expiry_date = data['expirationDate']
         existing_food_item.low_threshold = int(data['lowThreshold']),
@@ -137,6 +137,26 @@ def add_food():
     db.session.commit()
     return json.jsonify({"message": "Food item added"}), 201
 
+@app.route('/food/<id>', methods=['GET'])
+def get_food_item(id):
+    food_item = FoodItem.query.filter_by(
+        id=id,
+        user_id=session["user_id"]
+    ).first()
+    if food_item:
+        return json.jsonify({
+            "name": food_item.name,
+            "quantity": food_item.quantity,
+            "unit_type": food_item.unit_type,
+            "cost": food_item.cost,
+            "low_threshold": food_item.low_threshold,
+            "category": food_item.category,
+            "expiration_date": food_item.expiry_date.strftime("%Y-%m-%d"),
+            "description": food_item.description,
+            "nutrition_info": food_item.nutrition_info
+        }), 200
+    else:
+        return json.jsonify({"error": "Food item not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)
