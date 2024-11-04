@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 # Local imports
 from models import load_user_foods, load_shopping_foods
-from create_tables import Notification ,FoodItem, User, db
+from create_tables import Notification ,FoodItem, User, ShoppingList, ShoppingItem, db
 from get_food_data import get_food_data
 from app_config import ApplicationConfig
 
@@ -106,6 +106,28 @@ def get_shopping():
 
     foods = load_shopping_foods(user_id)
     return json.jsonify(foods)
+
+@app.route('/shopping/save', methods=['POST'])
+def save_shopping_list():
+    data = request.get_json()
+    inventory = data
+    user_id = session.get("user_id")
+
+    new_shopping_list = ShoppingList(user_id=user_id)
+    db.session.add(new_shopping_list)
+    db.session.flush()
+
+    for item in inventory:
+        new_item = ShoppingItem(
+            name=item['name'],
+            quantity=item['quantity'],
+            cost=item['cost'],
+            list_id=new_shopping_list.id
+        )
+        db.session.add(new_item)
+
+    db.session.commit()
+    return json.jsonify({"message": "Shopping list saved successfully"}), 201
 
 @app.route('/input_food', methods=['POST'])
 def add_food():
