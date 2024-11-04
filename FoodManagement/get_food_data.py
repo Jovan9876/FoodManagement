@@ -23,8 +23,6 @@ def get_food_data(food):
 
     food_data = fs.foods_search(food)
 
-    print(food_data)
-
     # Isolate just the description
     description = food_data[0]['food_description']
 

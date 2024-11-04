@@ -85,6 +85,14 @@ export const Inventory = () => {
                 <p class='text-sm font-medium text-gray-900 truncate dark:text-white'>Price:</p>
                 {item.cost}
               </div>
+              <Button 
+                onClick={() => window.location.href = `http://127.0.0.1:3000/input/${item.name}`} // Navigate to the input page for this food item
+                variant='outlined'
+                color='blue'
+                size='sm'
+              >
+                Update
+              </Button>
             </div>
           </li>
         ))}

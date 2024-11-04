@@ -4,8 +4,8 @@ from flask_session import Session
 from flask_cors import CORS
 
 # Local imports
-from models import load_user_foods
-from create_tables import FoodItem, User, db
+from models import load_user_foods, load_shopping_foods
+from create_tables import Notification ,FoodItem, User, ShoppingList, ShoppingItem, db
 from get_food_data import get_food_data
 from app_config import ApplicationConfig
 
@@ -97,26 +97,115 @@ def get_expenses():
     foods = load_user_foods(user_id)
     return json.jsonify(foods)
 
+@app.route('/shopping', methods=['GET'])
+def get_shopping():
+    user_id = session.get("user_id")
+
+    if not user_id:
+        return json.jsonify({"error": "Unauthorized"}), 401
+
+    foods = load_shopping_foods(user_id)
+    return json.jsonify(foods)
+
+@app.route('/shopping/save', methods=['POST'])
+def save_shopping_list():
+    data = request.get_json()
+    inventory = data
+    user_id = session.get("user_id")
+
+    new_shopping_list = ShoppingList(user_id=user_id)
+    db.session.add(new_shopping_list)
+    db.session.flush()
+
+    for item in inventory:
+        new_item = ShoppingItem(
+            name=item['name'],
+            quantity=item['quantity'],
+            cost=item['cost'],
+            list_id=new_shopping_list.id
+        )
+        db.session.add(new_item)
+
+    db.session.commit()
+    return json.jsonify({"message": "Shopping list saved successfully"}), 201
 
 @app.route('/input_food', methods=['POST'])
 def add_food():
     data = request.get_json()
-    new_food_item = FoodItem(
+    food_item = None
+    existing_food_item = FoodItem.query.filter_by(
         name=data['name'],
-        quantity=int(data['quantity']),
-        unit_type=data['unitType'],
-        cost=float(data['cost']),
-        low_threshold=int(data['lowThreshold']),
-        category=data['category'],
-        expiry_date=data['expirationDate'],
-        description=data['description'],
-        user_id=session["user_id"],
-        nutrition_info=get_food_data(data['name'])
-    )
-    db.session.add(new_food_item)
+        user_id=session["user_id"]
+    ).first()
+    if existing_food_item:
+        existing_food_item.quantity = int(data['quantity'])
+        existing_food_item.cost = float(data['cost'])
+        existing_food_item.expiry_date = data['expirationDate']
+        existing_food_item.low_threshold = int(data['lowThreshold'])
+        food_item = existing_food_item
+    else:
+        new_food_item = FoodItem(
+            name=data['name'],
+            quantity=int(data['quantity']),
+            unit_type=data['unitType'],
+            cost=float(data['cost']),
+            low_threshold=int(data['lowThreshold']),
+            category=data['category'],
+            expiry_date=data['expirationDate'],
+            description=data['description'],
+            user_id=session["user_id"],
+            nutrition_info=get_food_data(data['name'])
+        )
+        food_item = new_food_item
+        db.session.add(new_food_item)
+
+    if food_item.quantity <= food_item.low_threshold:
+        notification = Notification(
+            user_id=session["user_id"],
+            name = food_item.name,
+        )
+        db.session.add(notification)
     db.session.commit()
     return json.jsonify({"message": "Food item added"}), 201
 
+# Retrieves food item by it's name
+@app.route('/food/<food>', methods=['GET'])
+def get_food_item(food):
+    food_item = FoodItem.query.filter_by(
+        name=food,
+        user_id=session["user_id"]
+    ).first()
+    if food_item:
+        return json.jsonify({
+            "name": food_item.name,
+            "quantity": food_item.quantity,
+            "unit_type": food_item.unit_type,
+            "cost": food_item.cost,
+            "low_threshold": food_item.low_threshold,
+            "category": food_item.category,
+            "expiration_date": food_item.expiry_date.strftime("%Y-%m-%d"),
+            "description": food_item.description,
+            "nutrition_info": food_item.nutrition_info
+        }), 200
+    else:
+        return json.jsonify({"error": "Food item not found"}), 404
+    
+# Retrieves all user's notifiations
+@app.route('/notifications', methods=['GET'])
+def get_notifications():
+    notifications = Notification.query.filter_by(
+        user_id=session["user_id"]
+    ).all()
+    if notifications:
+        notifications_list = [
+            {
+                'name': notification.name,
+                'created_at': notification.created_at
+            } for notification in notifications
+        ]
+        return json.jsonify(notifications_list), 200
+    else:
+        return json.jsonify({"error": "Notifications not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

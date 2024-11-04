@@ -1,0 +1,24 @@
+.save_shopping {
+  display: flex;
+  justify-content: center;
+}
+
+.save_shopping button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  width: 200px;
+  font-size: 1rem;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  margin-bottom: 15px;
+  transition: background-color 0.3s ease;
+  text-align: center;
+  justify-content: center;
+}
+
+.save_shopping button:hover {
+  background-color: #0056b3;
+}

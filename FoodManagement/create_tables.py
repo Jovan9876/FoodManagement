@@ -4,6 +4,8 @@ from sqlalchemy import JSON
 from models import config
 from flask_login import UserMixin
 from uuid import uuid4
+from datetime import datetime
+import pytz
 
 params = config()
 app = Flask(__name__)
@@ -34,6 +36,26 @@ class FoodItem(db.Model):
     description = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.String(32), primary_key=True)
 
+class Notification(db.Model):
+     id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+     name = db.Column(db.String(100), nullable=False)
+     user_id = db.Column(db.String(32), primary_key=True)
+     created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Vancouver')).astimezone(pytz.utc), nullable=False)
+
+class ShoppingList(db.Model):
+    __tablename__ = "Shopping_List"
+    id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+    created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Vancouver')).astimezone(pytz.utc), nullable=False)
+    completed_at = db.Column(db.DateTime, nullable=True)
+    user_id = db.Column(db.String(32), primary_key=True)
+
+class ShoppingItem(db.Model):
+    __tablename__ = "Shopping_Item"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    name = db.Column(db.String(100), nullable=False)
+    quantity = db.Column(db.Integer, nullable=False)
+    cost = db.Column(db.Float, nullable=False)
+    list_id = db.Column(db.Integer, db.ForeignKey('Shopping_List.id'), nullable=False)
 
 # To create the table
 with app.app_context():
