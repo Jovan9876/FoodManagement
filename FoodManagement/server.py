@@ -167,6 +167,22 @@ def get_food_item(food):
         }), 200
     else:
         return json.jsonify({"error": "Food item not found"}), 404
+    
+# Retrieves all user's notifiations
+@app.route('/notifications', methods=['GET'])
+def get_notifications():
+    notifications = Notification.query.filter_by(
+        user_id=session["user_id"]
+    ).all()
+    if notifications:
+        notifications_list = [
+            {
+                'name': notification.name
+            } for notification in notifications
+        ]
+        return json.jsonify(notifications_list), 200
+    else:
+        return json.jsonify({"error": "Notifications not found"}), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

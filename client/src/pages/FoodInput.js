@@ -20,6 +20,7 @@ const FoodInput = () => {
   const headerText = foodExists ? "Update Existing Food Item" : "Add New Food Item";
   const subHeaderText = foodExists ? "Let's update your food item" : "Let's add your new food item";
   const isDisabled = foodExists;
+  
 useEffect(() => {
   if (food) {
       const fetchFoodItem = async () => {

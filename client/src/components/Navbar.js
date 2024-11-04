@@ -31,8 +31,8 @@ import {
   Navbar,
   Typography,
 } from '@material-tailwind/react';
-
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { NotificationsMenu } from '../components/NotificationDropdown'
 
 // profile menu component
 const profileMenuItems = [
@@ -235,6 +235,30 @@ function NavList() {
 }
 
 export function ComplexNavbar() {
+  const [notifications, setNotfications] = useState([]); 
+  useEffect(() => {
+    const fetchNotifications = async () => {
+        try {
+            const response = await fetch(`http://127.0.0.1:5000/notifications`, {
+              method: 'GET', // GET request
+              credentials: 'include', // Include cookies for session management
+              headers: {
+                'Content-Type': 'application/json', // Optional for GET requests but can be included if necessary
+              },
+            });
+            if (response.ok) {
+                const data = await response.json();
+                setNotfications(data);
+            } else {
+            
+                console.error('Error fetching food item:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Fetch error:', error);
+        }
+    };
+    fetchNotifications();
+}, []);
   const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -264,33 +288,12 @@ export function ComplexNavbar() {
           className='ml-auto mr-2 lg:hidden'>
           <Bars2Icon className='h-6 w-6' />
         </IconButton>
-        
-        {/* <Button size='sm' variant='text' onClick={() => (window.location.href = 'http://127.0.0.1:3000/input')}>
-          <span>Add Food</span>
-        </Button> */}
-        {/* <Button
-          size='sm'
-          variant='text'
-          onClick={() => {
-            fetch('http://127.0.0.1:5000/logout', {
-              method: 'POST',
-              credentials: 'include', // Include cookies with the request
-            })
-              .then((response) => {
-                if (response.ok) {
-                  // Redirect to login page after successful logout
-                  window.location.href = 'http://127.0.0.1:3000/login';
-                } else {
-                  console.error('Failed to log out');
-                }
-              })
-              .catch((error) => {
-                console.error('Error during signout:', error);
-              });
-          }}>
-          <span>Signout</span>
-        </Button> */}
+        <div className='flex items-center ml-auto'>
+          <div>
+        <NotificationsMenu notifications={notifications} />
+          </div>
         <ProfileMenu />
+    </div>  
       </div>
       <MobileNav open={isNavOpen} className='overflow-scroll'>
         <NavList />
