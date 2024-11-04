@@ -5,7 +5,7 @@ from flask_cors import CORS
 
 # Local imports
 from models import load_user_foods, load_shopping_foods
-from create_tables import FoodItem, User, db
+from create_tables import Notification ,FoodItem, User, db
 from get_food_data import get_food_data
 from app_config import ApplicationConfig
 
@@ -110,7 +110,7 @@ def get_shopping():
 @app.route('/input_food', methods=['POST'])
 def add_food():
     data = request.get_json()
-
+    food_item = None
     existing_food_item = FoodItem.query.filter_by(
         name=data['name'],
         user_id=session["user_id"]
@@ -119,7 +119,8 @@ def add_food():
         existing_food_item.quantity = int(data['quantity'])
         existing_food_item.cost = float(data['cost'])
         existing_food_item.expiry_date = data['expirationDate']
-        existing_food_item.low_threshold = int(data['lowThreshold']),
+        existing_food_item.low_threshold = int(data['lowThreshold'])
+        food_item = existing_food_item
     else:
         new_food_item = FoodItem(
             name=data['name'],
@@ -133,7 +134,15 @@ def add_food():
             user_id=session["user_id"],
             nutrition_info=get_food_data(data['name'])
         )
+        food_item = new_food_item
         db.session.add(new_food_item)
+
+    if food_item.quantity <= food_item.low_threshold:
+        notification = Notification(
+            user_id=session["user_id"],
+            name = food_item.name,
+        )
+        db.session.add(notification)
     db.session.commit()
     return json.jsonify({"message": "Food item added"}), 201
 

@@ -34,6 +34,11 @@ class FoodItem(db.Model):
     description = db.Column(db.String(255), nullable=True)
     user_id = db.Column(db.String(32), primary_key=True)
 
+class Notification(db.Model):
+     id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
+     name = db.Column(db.String(100), nullable=False)
+     user_id = db.Column(db.String(32), primary_key=True)
+     
 
 # To create the table
 with app.app_context():
