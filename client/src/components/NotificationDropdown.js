@@ -28,6 +28,9 @@ import {
   }
    
   export function NotificationsMenu({notifications}) {
+    const handleRedirect = (name) => {
+        window.location.href = `http://127.0.0.1:3000/input/${name}`;
+      };
     return (
       <Menu>
         <MenuHandler>
@@ -48,7 +51,7 @@ import {
         </MenuHandler>
          <MenuList className="flex flex-col gap-2">
             {notifications.map((notification, index) => (
-            <MenuItem key={index} className="flex items-center gap-4 py-2 pl-2 pr-8">
+            <MenuItem key={index} className="flex items-center gap-4 py-2 pl-2 pr-8" onClick={() => handleRedirect(notification.name)}>
             <Avatar
               variant="circular"
               alt="Notification Image"
