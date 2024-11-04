@@ -7,8 +7,13 @@ import {
     Avatar,
     Typography,
   } from "@material-tailwind/react";
+
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en.json';
    
-  function ClockIcon() {
+TimeAgo.addLocale(en);
+const timeAgo = new TimeAgo('en-US');
+function ClockIcon() {
     return (
       <svg
         width="16"
@@ -25,7 +30,7 @@ import {
         />
       </svg>
     );
-  }
+ }
    
   export function NotificationsMenu({notifications}) {
     const handleRedirect = (name) => {
@@ -63,7 +68,7 @@ import {
               </Typography>
               <Typography className="flex items-center gap-1 text-sm font-medium text-blue-gray-500">
                 <ClockIcon />
-                {notification.time || 'Just now'}
+                {timeAgo.format(new Date(notification.created_at)) || 'Just now'}
               </Typography>
             </div>
             </MenuItem>

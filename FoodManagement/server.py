@@ -177,7 +177,8 @@ def get_notifications():
     if notifications:
         notifications_list = [
             {
-                'name': notification.name
+                'name': notification.name,
+                'created_at': notification.created_at
             } for notification in notifications
         ]
         return json.jsonify(notifications_list), 200

@@ -4,6 +4,8 @@ from sqlalchemy import JSON
 from models import config
 from flask_login import UserMixin
 from uuid import uuid4
+from datetime import datetime
+import pytz
 
 params = config()
 app = Flask(__name__)
@@ -38,7 +40,7 @@ class Notification(db.Model):
      id = db.Column(db.Integer, primary_key=True, unique=True, autoincrement=True)
      name = db.Column(db.String(100), nullable=False)
      user_id = db.Column(db.String(32), primary_key=True)
-     
+     created_at = db.Column(db.DateTime, default=lambda: datetime.now(pytz.timezone('America/Vancouver')).astimezone(pytz.utc), nullable=False)
 
 # To create the table
 with app.app_context():
