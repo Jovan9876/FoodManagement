@@ -28,10 +28,10 @@ jobs:
 
       - name: Set environment variables
         run: |
-          echo "MYSQL_USER=${{ env.MYSQL_USER }}" >> $GITHUB_ENV
-          echo "MYSQL_PASSWORD=${{ env.MYSQL_PASSWORD }}" >> $GITHUB_ENV
-          echo "MYSQL_HOST=${{ env.MYSQL_HOST }}" >> $GITHUB_ENV
-          echo "MYSQL_DB=${{ env.MYSQL_DB }}" >> $GITHUB_ENV
+          echo "MYSQL_USER=${{ ENV.MYSQL_USER }}" >> $GITHUB_ENV
+          echo "MYSQL_PASSWORD=${{ ENV.MYSQL_PASSWORD }}" >> $GITHUB_ENV
+          echo "MYSQL_HOST=${{ ENV.MYSQL_HOST }}" >> $GITHUB_ENV
+          echo "MYSQL_DB=${{ ENV.MYSQL_DB }}" >> $GITHUB_ENV
 
       - name: Run tests
         run: |
