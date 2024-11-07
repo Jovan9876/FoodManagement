@@ -3,15 +3,15 @@ from configparser import ConfigParser
 
 def config(filename="database.ini", section="mysql"):
     db = {}
-
+    
     # First, check for environment variables (for CI/CD environments like GitHub Actions)
-    db['user'] = os.getenv('MYSQL_USER')
-    db['password'] = os.getenv('MYSQL_PASSWORD')
-    db['host'] = os.getenv('MYSQL_HOST')
-    db['database'] = os.getenv('MYSQL_DB')
-    db['port'] = os.getenv('MYSQL_PORT')
+    db['user'] = os.getenv('MYSQL_USER', 'test')
+    db['password'] = os.getenv('MYSQL_PASSWORD', 'test')
+    db['host'] = os.getenv('MYSQL_HOST', '127.0.0.1')
+    db['database'] = os.getenv('MYSQL_DB', 'FoodManagement')
+    db['port'] = os.getenv('MYSQL_PORT', '3306')
 
-    # Only fall back to reading the .ini file if the environment variables are not set
+    # If not found, fallback to reading from the configuration file
     if not all(db.values()):
         parser = ConfigParser()
         parser.read(filename)
@@ -21,5 +21,5 @@ def config(filename="database.ini", section="mysql"):
                 db[param[0]] = param[1]
         else:
             raise Exception(f"Section {section} not found in the {filename} file")
-
+    
     return db
