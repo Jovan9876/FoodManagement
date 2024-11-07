@@ -68,13 +68,6 @@ jobs:
             echo "Waiting for MySQL to be ready..."
             sleep 2
           done
-
-      - name: Wait for Redis to be ready
-        run: |
-          until docker exec redis redis-cli ping | grep -q PONG; do
-            echo "Waiting for Redis to be ready..."
-            sleep 2
-          done
           
       - name: Run tests
         run: |
