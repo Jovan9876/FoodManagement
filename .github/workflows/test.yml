@@ -46,7 +46,7 @@ jobs:
         run: |
           echo "MYSQL_USER=${{ secrets.MYSQL_USER }}" >> $GITHUB_ENV
           echo "MYSQL_PASSWORD=${{ secrets.MYSQL_PASSWORD }}" >> $GITHUB_ENV
-          echo "MYSQL_HOST=mysql" >> $GITHUB_ENV  # Use service name, not localhost
+          echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> $GITHUB_ENV
           echo "MYSQL_DB=${{ secrets.MYSQL_DB }}" >> $GITHUB_ENV
           echo "MYSQL_PORT=3306" >> $GITHUB_ENV
 
