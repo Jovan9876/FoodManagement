@@ -71,7 +71,7 @@ jobs:
 
       - name: Wait for Redis to be ready
         run: |
-          until redis-cli -h $REDIS_HOST -p $REDIS_PORT ping; do
+          until docker exec redis redis-cli ping | grep -q PONG; do
             echo "Waiting for Redis to be ready..."
             sleep 2
           done
