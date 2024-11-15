@@ -3,3 +3,6 @@ Dockerfile
 .env
 database.ini
 node_modules/
+__pycache__
+.pytest_cache
+.idea

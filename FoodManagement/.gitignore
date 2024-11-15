@@ -1,7 +1,0 @@
-env/
-Dockerfile
-.env
-database.ini
-__pycache__
-.pytest_cache
-.idea
