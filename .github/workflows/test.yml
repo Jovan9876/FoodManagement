@@ -51,6 +51,7 @@ jobs:
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
+          pip install pylint pylint-fail-under
 
       - name: Set environment variables
         run: |
@@ -70,7 +71,12 @@ jobs:
             echo "Waiting for MySQL to be ready..."
             sleep 2
           done
-          
+
+      - name: Run pylint
+        run: |
+          source venv/bin/activate
+          pylint --fail-under=8.0 FoodManagement/**/*.py
+
       - name: Run tests
         run: |
           source venv/bin/activate
