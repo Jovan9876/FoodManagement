@@ -92,16 +92,14 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          cd FoodManagement
-          docker build -t $DOCKER_USERNAME/food-management-backend:latest .
+          docker build -t $DOCKER_USERNAME/food-management-backend:latest ./FoodManagement
           docker push $DOCKER_USERNAME/food-management-backend:latest
 
       - name: Build and Push Client Docker Image
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          cd client
-          docker build -t $DOCKER_USERNAME/food-management-client:latest .
+          docker build -t $DOCKER_USERNAME/food-management-client:latest ./client
           docker push $DOCKER_USERNAME/food-management-client:latest
 
       - name: Zip Artifacts
