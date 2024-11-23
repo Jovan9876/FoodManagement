@@ -92,17 +92,17 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker build -t $DOCKER_USERNAME/FoodManagement:latest .
-          docker push $DOCKER_USERNAME/FoodManagement:latest
+          docker build -t $DOCKER_USERNAME/foodmanagement:latest .
+          docker push $DOCKER_USERNAME/foodmanagement:latest
 
       - name: Zip Artifacts
         run: |
-          zip -r FoodManagement.zip .
+          zip -r foodmanagement.zip .
           mkdir -p artifacts
-          mv FoodManagement.zip artifacts/
+          mv foodmanagement.zip artifacts/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: FoodManagement-artifact
-          path: artifacts/FoodManagement.zip
+          name: foodmanagement-artifact
+          path: artifacts/foodmanagement.zip
