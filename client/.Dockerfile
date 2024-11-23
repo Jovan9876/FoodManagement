@@ -19,5 +19,6 @@ EXPOSE 3000
 # Start app
 CMD ["npm", "start"]
 
-# docker build -t food-management-client:latest -f .\.Dockerfile .
-# docker run -p 3000:3000 --name client food-management-client:latest
+
+# docker build -t jovan9876/food-management-client:latest -f .\.Dockerfile .
+# docker push jovan9876/food-management-client:latest
