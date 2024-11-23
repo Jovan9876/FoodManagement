@@ -1,0 +1,69 @@
+services:
+  mysql:
+    env_file: .env
+    image: mysql:latest
+    container_name: mysql
+    environment:
+      MYSQL_DATABASE: ${DATABASE}
+      MYSQL_ROOT_PASSWORD: ${ROOT_PASS}
+      MYSQL_USER: ${USER}
+      MYSQL_PASSWORD: ${PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - "api.network"
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    restart: always
+    networks:
+      - "api.network"
+
+  backend:
+    # image: jovan9876/my-backend
+    build:
+      context: ../FoodManagement/
+      dockerfile: .Dockerfile
+    container_name: backend
+    env_file:
+      - .env
+    restart: always
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mysql
+      - redis
+    networks:
+      - "api.network"
+    command: >
+      sh -c "
+      python3 create_tables.py &&
+      python3 server.py
+      "
+
+  client:
+    # image: jovan9876/my-client
+    build:
+      context: ../client/
+      dockerfile: .Dockerfile
+    container_name: client
+    restart: always
+    ports:
+      - "3000:3000"
+    depends_on:
+      - "backend"
+    networks:
+      - "api.network"
+  
+volumes:
+  mysql-data:
+  redis-data:
+networks:
+  api.network:

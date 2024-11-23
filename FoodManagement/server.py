@@ -29,10 +29,9 @@ from app_config import ApplicationConfig
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 bcrypt = Bcrypt(app)
-CORS(app, supports_credentials=True)
+CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://127.0.0.1:3000"}})
 server_session = Session(app)
 db.init_app(app)
-
 
 @app.route("/@me", methods=["GET"])
 def get_current_user():
@@ -337,4 +336,4 @@ def get_notifications():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, host="0.0.0.0", port=5000)
