@@ -25,12 +25,12 @@ def config(filename="database.ini", section="mysql"):
     db = {}
 
     # First, check for environment variables (for CI/CD environments like GitHub Actions)
-    db["user"] = os.getenv("MYSQL_USER", "test")
-    db["password"] = os.getenv("MYSQL_PASSWORD", "test")
-    db["host"] = os.getenv("MYSQL_HOST", "mysql")
-    db["database"] = os.getenv("MYSQL_DB", "FoodManagement")
-    db["port"] = os.getenv("MYSQL_PORT", "3306")
-    db["redis"] = os.getenv("REDIS", "redis")
+    # db["user"] = os.getenv("MYSQL_USER", "test")
+    # db["password"] = os.getenv("MYSQL_PASSWORD", "test")
+    # db["host"] = os.getenv("MYSQL_HOST", "mysql")
+    # db["database"] = os.getenv("MYSQL_DB", "FoodManagement")
+    # db["port"] = os.getenv("MYSQL_PORT", "3306")
+    # db["redis"] = os.getenv("REDIS", "redis")
 
     # If not found, fallback to reading from the configuration file
     if not all(db.values()):
