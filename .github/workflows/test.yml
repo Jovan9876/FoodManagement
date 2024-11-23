@@ -60,7 +60,7 @@ jobs:
           echo "MYSQL_HOST=${{ secrets.MYSQL_HOST }}" >> $GITHUB_ENV
           echo "MYSQL_DB=${{ secrets.MYSQL_DB }}" >> $GITHUB_ENV
           echo "MYSQL_PORT=3306" >> $GITHUB_ENV
-          echo "REDIS_HOST=127.0.0.1" >> $GITHUB_ENV
+          echo "REDIS_HOST=${{ secrets.REDIS }}" >> $GITHUB_ENV
           echo "REDIS_PORT=6379" >> $GITHUB_ENV
           echo "CONSUMER_KEY=${{ secrets.CONSUMER_KEY }}" >> $GITHUB_ENV
           echo "CONSUMER_SECRET=${{ secrets.CONSUMER_SECRET }}" >> $GITHUB_ENV
