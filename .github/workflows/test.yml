@@ -99,7 +99,7 @@ jobs:
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker build -t $DOCKER_USERNAME/food-management-frontend:latest -f ./client/.Dockerfile .
+          docker build -t $DOCKER_USERNAME/food-management-client:latest -f ./client/.Dockerfile .
           docker push $DOCKER_USERNAME/food-management-client:latest
 
       - name: Zip Artifacts
