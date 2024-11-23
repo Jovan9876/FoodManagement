@@ -88,21 +88,32 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Build and Push Docker Image
+      - name: Build and Push Backend Docker Image
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         run: |
-          docker build -t $DOCKER_USERNAME/foodmanagement:latest .
-          docker push $DOCKER_USERNAME/foodmanagement:latest
+          cd FoodManagement
+          docker build -t $DOCKER_USERNAME/food-management-backend:latest .
+          docker push $DOCKER_USERNAME/food-management-backend:latest
+
+      - name: Build and Push Client Docker Image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          cd client
+          docker build -t $DOCKER_USERNAME/food-management-client:latest .
+          docker push $DOCKER_USERNAME/food-management-client:latest
 
       - name: Zip Artifacts
         run: |
-          zip -r foodmanagement.zip .
+          zip -r food-management-backend.zip FoodManagement/
+          zip -r food-management-client.zip client/
           mkdir -p artifacts
-          mv foodmanagement.zip artifacts/
+          mv food-management-backend.zip artifacts/
+          mv food-management-client.zip artifacts/
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v3
         with:
-          name: foodmanagement-artifact
-          path: artifacts/foodmanagement.zip
+          name: foodmanagement-artifacts
+          path: artifacts/
