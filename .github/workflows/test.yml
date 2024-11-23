@@ -81,3 +81,28 @@ jobs:
         run: |
           source venv/bin/activate
           pytest --maxfail=1 --disable-warnings -v --tb=short
+      
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Build and Push Docker Image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+        run: |
+          docker build -t $DOCKER_USERNAME/FoodManagement:latest .
+          docker push $DOCKER_USERNAME/FoodManagement:latest
+
+      - name: Zip Artifacts
+        run: |
+          zip -r FoodManagement.zip .
+          mkdir -p artifacts
+          mv FoodManagement.zip artifacts/
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: FoodManagement-artifact
+          path: artifacts/FoodManagement.zip
