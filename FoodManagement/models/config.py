@@ -24,14 +24,6 @@ from configparser import ConfigParser
 def config(filename="database.ini", section="mysql"):
     db = {}
 
-    # First, check for environment variables (for CI/CD environments like GitHub Actions)
-    # db["user"] = os.getenv("MYSQL_USER", "test")
-    # db["password"] = os.getenv("MYSQL_PASSWORD", "test")
-    # db["host"] = os.getenv("MYSQL_HOST", "127.0.0.1")
-    # db["database"] = os.getenv("MYSQL_DB", "FoodManagement")
-    # db["port"] = os.getenv("MYSQL_PORT", "3306")
-    # db["redis"] = os.getenv("REDIS", "127.0.0.1")
-
     db["user"] = os.getenv("MYSQL_USER")
     db["password"] = os.getenv("MYSQL_PASSWORD")
     db["host"] = os.getenv("MYSQL_HOST")
