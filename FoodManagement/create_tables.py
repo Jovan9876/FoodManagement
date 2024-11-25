@@ -17,6 +17,7 @@ import pytz
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import JSON
+from sqlalchemy.orm import relationship
 from flask_login import UserMixin
 from models import config
 
@@ -137,6 +138,11 @@ class ShoppingList(db.Model):
     )
     completed_at = db.Column(db.DateTime, nullable=True)
     user_id = db.Column(db.String(32), primary_key=True)
+    items = relationship(
+        "ShoppingItem",
+        backref="shopping_list",
+        cascade="all, delete-orphan"
+    )
 
 
 class ShoppingItem(db.Model):

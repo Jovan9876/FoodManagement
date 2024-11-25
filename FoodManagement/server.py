@@ -23,7 +23,7 @@ from flask_cors import CORS
 # Local imports
 from models import load_user_foods, load_shopping_foods
 from create_tables import Notification, FoodItem, User, ShoppingList, ShoppingItem, db
-from get_food_data import get_food_data
+from get_food_data import get_food_data, get_food_image
 from app_config import ApplicationConfig
 
 app = Flask(__name__)
@@ -313,8 +313,106 @@ def get_food_item(food):
     else:
         return json.jsonify({"error": "Food item not found"}), 404
 
+# Retrieves food item image by it's name
+@app.route("/food_image/<name>", methods=["GET"])
+def get_food_item_image(name):
+    """
+    Retrieves image of a specific food item by its name.
 
-# Retrieves all user's notifiations
+    Args:
+        name (str): The name of the food item.
+
+    Returns:
+        Response: string url linking to food item image.
+    """
+    food_item_image = get_food_image(name)
+
+    return food_item_image, 200
+
+# Retrieves all saved shopping lists associated to the user
+@app.route("/shoppingHistory", methods=["GET"])
+def get_shopping_history():
+    """
+    Retrieves user's saved shopping lists.
+
+    Returns:
+        Response: JSON array containing the shopping lists data if found.
+        Response: JSON with an error message and status 404 if not found.
+    """
+    shopping_lists = ShoppingList.query.filter_by(user_id=session["user_id"]).all()
+    if shopping_lists:
+        shopping_lists_list = [
+            {"listId": shopping_list.id, "created_at": shopping_list.created_at}
+            for shopping_list in shopping_lists
+        ]
+        return json.jsonify(shopping_lists_list), 200,
+    else:
+        return json.jsonify({"error": "Shopping lists not found"}), 404
+    
+# Deletes shopping list from history from a given list id
+@app.route("/shoppingHistory/<listId>", methods=["DELETE"])
+def delete_shopping_history(listId):
+    """
+    Deletes shopping list from given list id.
+
+    Args:
+        listId (int): The ID of the shopping list item to delete.
+
+    Returns:
+        JSON with a success message and status 201 if the operation is successful
+    """
+    shopping_list = ShoppingList.query.filter_by(id=listId, user_id=session["user_id"]).first()
+    db.session.delete(shopping_list)
+    db.session.commit()
+
+    return json.jsonify({"message": f"Item with ID {listId} deleted successfully."}), 200
+    
+# Retrieves all shopping items associated to the given shopping list id
+@app.route("/shopping/<listId>", methods=["GET"])
+def get_shopping_items(listId):
+    """
+    Retrieves shopping list's shopping items.
+
+    Returns:
+        Response: JSON array containing the shopping items data if found.
+        Response: JSON with an error message and status 404 if not found.
+    """
+    shopping_items = ShoppingItem.query.filter_by(list_id=listId).all()
+    if shopping_items:
+        shopping_items_list = [
+            {"id": shopping_item.id, "name": shopping_item.name, "quantity": shopping_item.quantity, "cost": shopping_item.cost, "listId": shopping_item.list_id}
+            for shopping_item in shopping_items
+        ]
+        return json.jsonify(shopping_items_list), 200,
+    else:
+        return json.jsonify({"error": "Shopping items not found"}), 404
+    
+# Restocks inventory from shopping list items
+@app.route("/shoppingHistory/restock", methods=["POST"])
+def restock_from_shopping_list():
+    """
+    Restocks inventory from shopping list items.
+
+    Returns:
+        JSON with a success message and status 201 if the operation is successful
+    """
+    shopping_list = request.get_json()
+    shopping_items = ShoppingItem.query.filter_by(list_id=shopping_list['listId']).all()
+    shopping_items_list = [
+        {"id": shopping_item.id, "name": shopping_item.name, "quantity": shopping_item.quantity, "cost": shopping_item.cost, "listId": shopping_item.list_id}
+        for shopping_item in shopping_items
+    ]
+
+    for shopping_item in shopping_items_list:
+        food_item = FoodItem.query.filter_by(user_id=session["user_id"], name = shopping_item["name"]).first()
+        if food_item:
+            food_item.quantity += shopping_item["quantity"]
+
+    db.session.commit()
+
+    return json.jsonify({"message": f"Inventory successfully restocked from Shopping list with ID {shopping_list['listId']}."}), 200
+
+# Retrieves all user's notifications
 @app.route("/notifications", methods=["GET"])
 def get_notifications():
     """

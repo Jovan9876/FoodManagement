@@ -91,6 +91,7 @@ def load_shopping_foods(user_id):
     try:
         # Read connection parameters
         params = config()
+        params.pop("redis")
 
         # Connect to the MySQL server
         conn = mysql.connector.connect(**params)

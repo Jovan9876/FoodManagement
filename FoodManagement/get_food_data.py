@@ -78,3 +78,23 @@ def get_food_data(food):
     return nutrition_dict
     # {'Serving Size': 'Per 100g', 'Calories': '89kcal',
     #  'Fat': '0.33g', 'Carbs': '22.84g', 'Protein': '1.09g'}
+
+def get_food_image(food):
+    """
+    Retrieves display image for a given food item using the FatSecret API.
+
+    The function searches for the food item, and extracts its image
+
+    Args:
+        food (str): The name of the food item to search for.
+
+    Returns:
+        str: A url linking to an image of the food item
+    """
+
+    food_data = fs.foods_search(food)
+    food_name = food_data[0]["food_name"]
+
+    food_image = f"https://www.fatsecret.com/calories-nutrition/generic/{food_name}/photos/"
+
+    return food_image
