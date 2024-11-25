@@ -7,7 +7,9 @@ import {
     Avatar,
     Typography,
   } from "@material-tailwind/react";
-
+  import {
+    ExclamationCircleIcon
+  } from '@heroicons/react/24/solid';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
    
@@ -57,11 +59,7 @@ function ClockIcon() {
          <MenuList className="flex flex-col gap-2">
             {notifications.map((notification, index) => (
             <MenuItem key={index} className="flex items-center gap-4 py-2 pl-2 pr-8" onClick={() => handleRedirect(notification.name)}>
-            <Avatar
-              variant="circular"
-              alt="Notification Image"
-              src={`${process.env.PUBLIC_URL}/images/profile.png`}
-            />
+            <ExclamationCircleIcon className="w-9 h-9 text-red-500"/>
              <div className="flex flex-col gap-1">
               <Typography variant="small" color="gray" className="font-semibold">
                 {notification.name} needs restocking
