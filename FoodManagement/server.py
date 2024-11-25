@@ -29,7 +29,11 @@ from app_config import ApplicationConfig
 app = Flask(__name__)
 app.config.from_object(ApplicationConfig)
 bcrypt = Bcrypt(app)
-CORS(app, supports_credentials=True, resources={r"/*": {"origins": "http://127.0.0.1:3000"}})
+CORS(app, supports_credentials=True, resources={
+    r"/*": {
+        "origins": ["http://127.0.0.1:3000", "http://localhost:3000"],
+    }
+})
 server_session = Session(app)
 db.init_app(app)
 
