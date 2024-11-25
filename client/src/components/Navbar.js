@@ -122,74 +122,6 @@ function ProfileMenu() {
   );
 }
 
-// // nav list menu
-// const navListMenuItems = [
-//   {
-//     title: 'Food Inventory',
-//     description: '',
-//     link: '/',
-//   },
-//   {
-//     title: 'Expenses',
-//     description: '',
-//     link: '/expenses',
-//   },
-//   {
-//     title: 'Shopping List',
-//     description: '',
-//     link: '/shopping',
-//   },
-// ];
-
-// function NavListMenu() {
-//   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-//   const renderItems = navListMenuItems.map(({ title, description, link }) => (
-//     <a href={link} key={title}>
-//       <MenuItem>
-//         <Typography variant='h6' color='blue-gray' className='mb-1'>
-//           {title}
-//         </Typography>
-//         <Typography variant='small' color='gray' className='font-normal'>
-//           {description}
-//         </Typography>
-//       </MenuItem>
-//     </a>
-//   ));
-
-//   return (
-//     <React.Fragment>
-//       <Menu allowHover open={isMenuOpen} handler={setIsMenuOpen}>
-//         <MenuHandler>
-//           <Typography as='a' href='#' variant='small' className='font-normal'>
-//             <MenuItem className='hidden items-center gap-2 font-medium text-blue-gray-900 lg:flex lg:rounded-full'>
-//               <Square3Stack3DIcon className='h-[18px] w-[18px] text-blue-gray-500' /> Pages{' '}
-//               <ChevronDownIcon
-//                 strokeWidth={2}
-//                 className={`h-3 w-3 transition-transform ${isMenuOpen ? 'rotate-180' : ''}`}
-//               />
-//             </MenuItem>
-//           </Typography>
-//         </MenuHandler>
-//         <MenuList className='hidden w-[36rem] grid-cols-7 gap-3 overflow-visible lg:grid'>
-//           <Card
-//             color='blue'
-//             shadow={false}
-//             variant='gradient'
-//             className='col-span-3 grid h-full w-full place-items-center rounded-md'>
-//             <RocketLaunchIcon strokeWidth={1} className='h-28 w-28' />
-//           </Card>
-//           <ul className='col-span-4 flex w-full flex-col gap-1'>{renderItems}</ul>
-//         </MenuList>
-//       </Menu>
-//       <MenuItem className='flex items-center gap-2 font-medium text-blue-gray-900 lg:hidden'>
-//         <Square3Stack3DIcon className='h-[18px] w-[18px] text-blue-gray-500' /> Pages{' '}
-//       </MenuItem>
-//       <ul className='ml-6 flex w-full flex-col gap-1 lg:hidden'>{renderItems}</ul>
-//     </React.Fragment>
-//   );
-// }
-
 // nav list component
 const navListItems = [
   {
@@ -235,30 +167,53 @@ function NavList() {
 }
 
 export function ComplexNavbar() {
-  const [notifications, setNotfications] = useState([]); 
+  const [notifications, setNotifications] = useState([]); 
+  // Function to fetch notifications and update state
+ 
+  const fetchNotifications = async () => {
+    try {
+      const response = await fetch('http://127.0.0.1:5000/notifications', {
+        method: 'GET', // GET request
+        credentials: 'include', // Include cookies for session management
+        headers: {
+          'Content-Type': 'application/json', // Optional for GET requests but can be included if necessary
+        },
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setNotifications(data || []); // Make sure to handle response structure
+      } else {
+        console.error('Error fetching notifications:', response.statusText);
+        setNotifications([])
+      }
+    } catch (error) {
+      console.error('Fetch error:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchNotifications = async () => {
-        try {
-            const response = await fetch(`http://127.0.0.1:5000/notifications`, {
-              method: 'GET', // GET request
-              credentials: 'include', // Include cookies for session management
-              headers: {
-                'Content-Type': 'application/json', // Optional for GET requests but can be included if necessary
-              },
-            });
-            if (response.ok) {
-                const data = await response.json();
-                setNotfications(data);
-            } else {
-            
-                console.error('Error fetching food item:', response.statusText);
-            }
-        } catch (error) {
-            console.error('Fetch error:', error);
-        }
-    };
-    fetchNotifications();
-}, []);
+    fetchNotifications(); // Fetch notifications on component mount
+  }, []); 
+
+  const deleteNotification = async (id) => {
+    try {
+      const response = await fetch(`http://127.0.0.1:5000/notifications/${id}`, {
+          method: "DELETE",
+          credentials: "include", // Include cookies for user session
+      });
+
+      if (response.ok) {
+          // const data = await response.json();
+          // console.log(data.message);
+          fetchNotifications();
+      } else {
+          const error = await response.json();
+          console.error(error.error);
+      }
+  } catch (error) {
+      console.error("Error deleting notification:", error);
+  }
+  }
   const [isNavOpen, setIsNavOpen] = React.useState(false);
 
   const toggleIsNavOpen = () => setIsNavOpen((cur) => !cur);
@@ -290,7 +245,7 @@ export function ComplexNavbar() {
         </IconButton>
         <div className='flex items-center ml-auto'>
           <div>
-        <NotificationsMenu notifications={notifications} />
+        <NotificationsMenu notifications={notifications} deleteNotification={deleteNotification}/>
           </div>
         <ProfileMenu />
     </div>  

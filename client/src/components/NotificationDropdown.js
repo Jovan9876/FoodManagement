@@ -8,7 +8,7 @@ import {
     Typography,
   } from "@material-tailwind/react";
   import {
-    ExclamationCircleIcon
+    ExclamationCircleIcon, XMarkIcon
   } from '@heroicons/react/24/solid';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en.json';
@@ -34,10 +34,13 @@ function ClockIcon() {
     );
  }
    
-  export function NotificationsMenu({notifications}) {
+  export function NotificationsMenu({notifications, deleteNotification}) {
     const handleRedirect = (name) => {
         window.location.href = `http://127.0.0.1:3000/input/${name}`;
       };
+      const handleDelete = (id) => {
+        deleteNotification(id);
+      }
     return (
       <Menu>
         <MenuHandler>
@@ -57,7 +60,7 @@ function ClockIcon() {
           </IconButton>
         </MenuHandler>
          <MenuList className="flex flex-col gap-2">
-            {notifications.map((notification, index) => (
+            {notifications?.map((notification, index) => (
             <MenuItem key={index} className="flex items-center gap-4 py-2 pl-2 pr-8" onClick={() => handleRedirect(notification.name)}>
             <ExclamationCircleIcon className="w-9 h-9 text-red-500"/>
              <div className="flex flex-col gap-1">
@@ -69,6 +72,15 @@ function ClockIcon() {
                 {timeAgo.format(new Date(notification.created_at)) || 'Just now'}
               </Typography>
             </div>
+            <IconButton
+              variant="text"
+              className="text-gray-400 hover:text-gray-600"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleDelete(notification.id);}}
+            >
+              <XMarkIcon className="w-5 h-5" />
+            </IconButton>
             </MenuItem>
             ))}
             </MenuList>

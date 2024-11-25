@@ -429,13 +429,33 @@ def get_notifications():
     notifications = Notification.query.filter_by(user_id=session["user_id"]).all()
     if notifications:
         notifications_list = [
-            {"name": notification.name, "created_at": notification.created_at}
+            {"id": notification.id, "name": notification.name, "created_at": notification.created_at}
             for notification in notifications
         ]
         return json.jsonify(notifications_list), 200
     else:
         return json.jsonify({"error": "Notifications not found"}), 404
 
+# Deletes a user's notification by ID
+@app.route("/notifications/<int:id>", methods=["DELETE"])
+def delete_notification(id):
+    """
+    Deletes a notification by its ID for the currently logged-in user.
+
+    Args:
+        id (int): ID of the notification.
+
+    Returns:
+        Response: JSON with success message and status 200 if the notification is deleted.
+        Response: JSON with error message and status 404 if the notification is not found.
+    """
+    notification = Notification.query.filter_by(id=id, user_id=session["user_id"]).first()
+    if notification:
+        db.session.delete(notification)
+        db.session.commit()
+        return json.jsonify({"message": f"Notification with ID {id} deleted successfully."}), 200
+    else:
+        return json.jsonify({"error": f"Notification with ID {id} not found."}), 404
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=5000)
