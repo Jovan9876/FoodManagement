@@ -19,28 +19,32 @@ Ensure you have the following installed:
 
 ---
 
-## Configure Environment Variables
+### Configure Environment Variables
 
-Create a .env file in the deployment directory and add the following:
+1. **`.env` file**  
+   Create a `.env` file in the `deployment` directory and add the following content:
 
-DATABASE=FoodManagement
-HOST=mysql
-PORT=3306
-USER=test
-PASSWORD=test
-ROOT_PASS=test
-CONSUMER_KEY=<Your_FatSecretAPI_Consumer_Key>
-CONSUMER_SECRET=<Your_FatSecretAPI_Consumer_Secret>
+   ```env
+   DATABASE=FoodManagement
+   HOST=mysql
+   PORT=3306
+   USER=test
+   PASSWORD=test
+   ROOT_PASS=test
+   CONSUMER_KEY=<Your_FatSecretAPI_Consumer_Key>
+   CONSUMER_SECRET=<Your_FatSecretAPI_Consumer_Secret>
 
-Create a database.ini file in /FoodManagement/ root of the project with the following content:
-
-[mysql]
-host=mysql
-port=3306
-database=FoodManagement
-user=test
-password=test
-redis=redis
+2. **`database.ini` file** 
+   Create a `database.ini` file in the `FoodManagement` directory and add the following content:
+   
+    ```ini
+    [mysql]
+    host=mysql
+    port=3306
+    database=FoodManagement
+    user=test
+    password=test
+    redis=redis
 
 ---
 
